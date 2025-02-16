@@ -6,8 +6,8 @@ import { useEffect, useRef } from "react";
 
 const MorphingSVG = () => {
   const ref = useRef(null);
-  const width = 450,
-    height = 450;
+  const width = 400,
+    height = 400;
 
   useEffect(() => {
     const svg = d3.select(ref.current);
@@ -42,7 +42,7 @@ const MorphingSVG = () => {
 
   return (
     <>
-      <svg ref={ref} width={width} height={height} transform="rotate(-135)">
+      <svg ref={ref} width={width} height={height} transform="rotate(-135)" viewBox={`0 0 ${width} ${height}`}>
         {/* Image masquée par le clipPath */}
         <image
           href="/image.png"
