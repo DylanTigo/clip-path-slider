@@ -1,3 +1,8 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+#circle-mask{
+  transform-origin: center;
+  transform: rotate(225deg);
+}

@@ -1,10 +1,11 @@
 "use client";
 
 import * as d3 from "d3";
-import Image from "next/image";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 
 const MorphingSVG = () => {
+  const [visible, setVisible] = useState(false);
+
   const ref = useRef(null);
   const width = 400,
     height = 400;
@@ -17,8 +18,8 @@ const MorphingSVG = () => {
       .arc()
       .innerRadius(0) // Cercle plein
       .outerRadius(width / 2) // Rayon max du masque
-      .startAngle(0)
-      .endAngle(0); // Début fermé
+      .startAngle(2 * Math.PI ) // Début fermé
+      .endAngle(2 * Math.PI ); // Fin fermé
 
     // Ajout du clipPath
     const clipPath = svg
@@ -28,25 +29,34 @@ const MorphingSVG = () => {
       .attr("d", arc)
       .attr("transform", `translate(${width / 2}, ${height / 2})`);
 
+    setVisible(true);
+
+    console.log("Render");
+
     // Animation d'ouverture
     clipPath
       .transition()
       .duration(2000)
       .attrTween("d", function () {
-        const interpolate = d3.interpolate(0, 2 * Math.PI);
+        const interpolate = d3.interpolate( 2 * Math.PI, 0);
         return function (t: number) {
-          return arc.startAngle(interpolate(t))();
+          return arc.endAngle(interpolate(t))();
         };
       });
   }, []);
 
   return (
     <>
-      <svg ref={ref} width={width} height={height} transform="rotate(-135)" viewBox={`0 0 ${width} ${height}`}>
+      <svg
+        ref={ref}
+        width={width}
+        height={height}
+        viewBox={`0 0 ${width} ${height}`}
+        opacity={visible ? 1 : 0}
+      >
         {/* Image masquée par le clipPath */}
         <image
           href="/image.png"
-          style={{ objectFit: "cover", transformOrigin: "center", rotate: "135deg", objectPosition: "center" }}
           width={width}
           clipPath="url(#circle-mask)"
         />
