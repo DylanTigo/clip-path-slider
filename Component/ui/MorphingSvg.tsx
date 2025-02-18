@@ -1,9 +1,10 @@
 "use client";
 
 import * as d3 from "d3";
+import { i } from "motion/react-client";
 import { useEffect, useRef, useState } from "react";
 
-const MorphingSVG = () => {
+const MorphingSVG = ({ image, index }: { image: string, index: number }) => {
   const [visible, setVisible] = useState(false);
 
   const ref = useRef(null);
@@ -31,12 +32,11 @@ const MorphingSVG = () => {
 
     setVisible(true);
 
-    console.log("Render");
-
     // Animation d'ouverture
     clipPath
       .transition()
       .duration(2000)
+      .ease(d3.easeCubicOut)
       .attrTween("d", function () {
         const interpolate = d3.interpolate( 2 * Math.PI, 0);
         return function (t: number) {
@@ -46,23 +46,22 @@ const MorphingSVG = () => {
   }, []);
 
   return (
-    <>
       <svg
         ref={ref}
         width={width}
         height={height}
         viewBox={`0 0 ${width} ${height}`}
         opacity={visible ? 1 : 0}
+        className="center-layout"
       >
         {/* Image masquée par le clipPath */}
         <image
-          href="/image.png"
+          href={image}
           width={width}
           clipPath="url(#circle-mask)"
         />
       </svg>
-    </>
-  );
+    );
 };
 
 export default MorphingSVG;

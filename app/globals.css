@@ -2,7 +2,17 @@
 @tailwind components;
 @tailwind utilities;
 
+body {
+  font-family: var(--font-funnel-display);
+}
+
 #circle-mask{
   transform-origin: center;
   transform: rotate(225deg);
+}
+
+@layer components {
+  .center-layout {
+    @apply absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2;
+  }
 }
