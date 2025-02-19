@@ -7,38 +7,19 @@ import { useState } from "react";
 
 export default function Home() {
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [svgComponents, setSvgComponents] = useState([{ image: slides[0].image, index: 0 }]);
-  const [direction, setDirection] = useState("next");
+  const [direction, setDirection] = useState<'next' | 'prev'>('next');
 
-  /* const handlePrev = () => {
-    if (currentIndex > 0) {
-      setTimeout(() => {
-        setDirection("prev")
-        setCurrentIndex((prevIndex) => prevIndex - 1);
-        setSvgComponents((prevComponents) => prevComponents.slice(0, -1));
-      }, 1500);
-    }
-  };
-
-  const handleNext = () => {
-    if (currentIndex < slides.length - 1) {
-      setCurrentIndex((prevIndex) => prevIndex + 1);
-      setSvgComponents((prevComponents) => [
-        ...prevComponents,
-        { image: slides[currentIndex + 1].image, index: currentIndex + 1 },
-      ]);
-      setDirection("next")
-    }
-  }; */
   const handlePrev = () => {
     setDirection("prev")
     if (currentIndex > 0) {
+      setCurrentIndex((prevIndex) => prevIndex - 1);
     }
   };
 
   const handleNext = () => {
     setDirection("next")
     if (currentIndex < slides.length - 1) {
+      setCurrentIndex((prevIndex) => prevIndex + 1);
     }
   };
 
@@ -66,20 +47,17 @@ export default function Home() {
           </div>
         </div>
 
-        <div className="center-layout w-full h-full pointer-events-none">
-          {/* {svgComponents.map((svg, idx) => (
-            <MorphingSVG key={idx+"slide"} index={svg.index} image={svg.image} direction={direction}></MorphingSVG>
-            ))} */}
-          <MorphingSVG index={svgComponents[0].index} image={svgComponents[0].image} direction={direction}></MorphingSVG>
+        <div className="center-layout w-full h-full -z-10">
+          <MorphingSVG currentIndex={currentIndex} slides={slides} direction={direction}></MorphingSVG>
           
         </div>
 
         <div className="flex justify-end items-center gap-3">
-          <button className="p-2.5 bg-zinc-900 rounded-full" onClick={handlePrev}>
-            <ChevronLeft className="text-white size-5" />
+          <button className="p-2.5 border border-zinc-900 rounded-full" onClick={handlePrev}>
+            <ChevronLeft className="text-zinc-900 size-5" />
           </button>
-          <button className="p-2.5 bg-zinc-900 rounded-full" onClick={handleNext}>
-            <ChevronRight className="text-white size-5" />
+          <button className="p-2.5 border border-zinc-900 rounded-full" onClick={handleNext}>
+            <ChevronRight className="text-zinc-900 size-5" />
           </button>
         </div>
 
