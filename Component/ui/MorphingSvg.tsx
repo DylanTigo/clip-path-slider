@@ -1,31 +1,36 @@
 "use client";
 
 import * as d3 from "d3";
-import { i } from "motion/react-client";
 import { useEffect, useRef, useState } from "react";
 
-const MorphingSVG = ({ image, index }: { image: string, index: number }) => {
+const MorphingSVG = ({ image, index }: { index: number, image: string }) => {
   const [visible, setVisible] = useState(false);
 
-  const ref = useRef(null);
-  const width = 400,
-    height = 400;
-
+  const svgRef = useRef<SVGSVGElement>(null);
+  
   useEffect(() => {
-    const svg = d3.select(ref.current);
+    const rect = svgRef.current?.getBoundingClientRect();
+    if (!rect) return;
+    const { width, height } = rect;
 
+    const svg = d3.select(svgRef.current).style("z-index", index);
+
+    const clipPathId = `circle-mask-${index}`;
+    const existingClipPath = svg.select(`#${clipPathId}`);
+    if (!existingClipPath.empty()) return
     // Définition de l'arc
     const arc = d3
       .arc()
-      .innerRadius(0) // Cercle plein
-      .outerRadius(width / 2) // Rayon max du masque
-      .startAngle(2 * Math.PI ) // Début fermé
-      .endAngle(2 * Math.PI ); // Fin fermé
-
-    // Ajout du clipPath
+      .innerRadius(0) 
+      .outerRadius(width / 2)
+      .startAngle(2 * Math.PI )
+      .endAngle(2 * Math.PI );
+      
     const clipPath = svg
       .append("clipPath")
-      .attr("id", "circle-mask")
+      .attr("id", clipPathId)
+      .style("transform", "rotate(225deg)")
+      .style("transform-origin", "center")
       .append("path")
       .attr("d", arc)
       .attr("transform", `translate(${width / 2}, ${height / 2})`);
@@ -35,31 +40,35 @@ const MorphingSVG = ({ image, index }: { image: string, index: number }) => {
     // Animation d'ouverture
     clipPath
       .transition()
-      .duration(2000)
-      .ease(d3.easeCubicOut)
+      .duration(1500)
       .attrTween("d", function () {
         const interpolate = d3.interpolate( 2 * Math.PI, 0);
         return function (t: number) {
           return arc.endAngle(interpolate(t))();
         };
-      });
-  }, []);
+      })
+      .on("start", () => console.log("Animation démarrée"))
+      .on("end", () => console.log("Animation terminée"));
+
+     return () => {
+       console.log("Cleaning up");
+       svg.select(`#${clipPathId}`).remove();
+     }
+  }, [index]);
 
   return (
       <svg
-        ref={ref}
-        width={width}
-        height={height}
-        viewBox={`0 0 ${width} ${height}`}
+        ref={svgRef}
+        width="400"
+        height="400"
+        clipPath={`url(#circle-mask-${index})`}
         opacity={visible ? 1 : 0}
         className="center-layout"
       >
-        {/* Image masquée par le clipPath */}
-        <image
-          href={image}
-          width={width}
-          clipPath="url(#circle-mask)"
-        />
+       <image
+        href={image}
+        width="100%"
+      />
       </svg>
     );
 };
