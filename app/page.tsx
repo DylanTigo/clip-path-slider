@@ -10,13 +10,13 @@ export default function Home() {
   const [svgComponents, setSvgComponents] = useState([{ image: slides[0].image, index: 0 }]);
   const [direction, setDirection] = useState("next");
 
-  const handlePrev = () => {
+  /* const handlePrev = () => {
     if (currentIndex > 0) {
-      /* setTimeout(() => { */
+      setTimeout(() => {
         setDirection("prev")
         setCurrentIndex((prevIndex) => prevIndex - 1);
         setSvgComponents((prevComponents) => prevComponents.slice(0, -1));
-      /* }, 1500); */
+      }, 1500);
     }
   };
 
@@ -28,6 +28,17 @@ export default function Home() {
         { image: slides[currentIndex + 1].image, index: currentIndex + 1 },
       ]);
       setDirection("next")
+    }
+  }; */
+  const handlePrev = () => {
+    setDirection("prev")
+    if (currentIndex > 0) {
+    }
+  };
+
+  const handleNext = () => {
+    setDirection("next")
+    if (currentIndex < slides.length - 1) {
     }
   };
 
@@ -56,9 +67,11 @@ export default function Home() {
         </div>
 
         <div className="center-layout w-full h-full pointer-events-none">
-          {svgComponents.map((svg, idx) => (
+          {/* {svgComponents.map((svg, idx) => (
             <MorphingSVG key={idx+"slide"} index={svg.index} image={svg.image} direction={direction}></MorphingSVG>
-            ))}
+            ))} */}
+          <MorphingSVG index={svgComponents[0].index} image={svgComponents[0].image} direction={direction}></MorphingSVG>
+          
         </div>
 
         <div className="flex justify-end items-center gap-3">
