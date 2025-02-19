@@ -8,11 +8,15 @@ import { useState } from "react";
 export default function Home() {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [svgComponents, setSvgComponents] = useState([{ image: slides[0].image, index: 0 }]);
+  const [direction, setDirection] = useState("next");
 
   const handlePrev = () => {
     if (currentIndex > 0) {
-      setCurrentIndex((prevIndex) => prevIndex - 1);
-      setSvgComponents((prevComponents) => prevComponents.slice(0, -1));
+      /* setTimeout(() => { */
+        setDirection("prev")
+        setCurrentIndex((prevIndex) => prevIndex - 1);
+        setSvgComponents((prevComponents) => prevComponents.slice(0, -1));
+      /* }, 1500); */
     }
   };
 
@@ -23,6 +27,7 @@ export default function Home() {
         ...prevComponents,
         { image: slides[currentIndex + 1].image, index: currentIndex + 1 },
       ]);
+      setDirection("next")
     }
   };
 
@@ -33,7 +38,7 @@ export default function Home() {
       </div>
 
       <div className="flex flex-col justify-between w-full mt-14 max-w-4xl relative">
-        
+
         <div className="flex justify-between items-center w-full">
           <div className="max-w-64">
             <h1 className="text-zinc-950 text-2xl md:text-3xl font-bold text-nowrap mb-2">
@@ -52,7 +57,7 @@ export default function Home() {
 
         <div className="center-layout w-full h-full pointer-events-none">
           {svgComponents.map((svg, idx) => (
-            <MorphingSVG key={idx+"slide"} index={svg.index} image={svg.image}></MorphingSVG>
+            <MorphingSVG key={idx+"slide"} index={svg.index} image={svg.image} direction={direction}></MorphingSVG>
             ))}
         </div>
 
