@@ -29,7 +29,7 @@ const MorphingSVG = ({ image, index }: { index: number, image: string }) => {
     const clipPath = svg
       .append("clipPath")
       .attr("id", clipPathId)
-      .style("transform", "rotate(225deg)")
+      .style("transform", "rotate(215deg)")
       .style("transform-origin", "center")
       .append("path")
       .attr("d", arc)
@@ -47,11 +47,8 @@ const MorphingSVG = ({ image, index }: { index: number, image: string }) => {
           return arc.endAngle(interpolate(t))();
         };
       })
-      .on("start", () => console.log("Animation démarrée"))
-      .on("end", () => console.log("Animation terminée"));
 
      return () => {
-       console.log("Cleaning up");
        svg.select(`#${clipPathId}`).remove();
      }
   }, [index]);
@@ -59,15 +56,20 @@ const MorphingSVG = ({ image, index }: { index: number, image: string }) => {
   return (
       <svg
         ref={svgRef}
-        width="400"
-        height="400"
+        width="95%"
+        height="95%"
         clipPath={`url(#circle-mask-${index})`}
         opacity={visible ? 1 : 0}
         className="center-layout"
+        style={{
+          maxWidth: 400,
+          maxHeight: 400
+        }}
       >
        <image
         href={image}
         width="100%"
+        
       />
       </svg>
     );

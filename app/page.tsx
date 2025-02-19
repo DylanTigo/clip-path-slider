@@ -33,6 +33,7 @@ export default function Home() {
       </div>
 
       <div className="flex flex-col justify-between w-full mt-14 max-w-4xl relative">
+        
         <div className="flex justify-between items-center w-full">
           <div className="max-w-64">
             <h1 className="text-zinc-950 text-2xl md:text-3xl font-bold text-nowrap mb-2">
@@ -42,11 +43,13 @@ export default function Home() {
               {slides[currentIndex].description}
             </p>
           </div>
+
           <div className="flex text-2xl tracking-widest gap-2">
             <span>{String(currentIndex + 1).padStart(2, '0')}</span>
             <span className="opacity-50"> - {String(slides.length).padStart(2, '0')}</span>
           </div>
         </div>
+
         <div className="center-layout w-full h-full pointer-events-none">
           {svgComponents.map((svg, idx) => (
             <MorphingSVG key={idx+"slide"} index={svg.index} image={svg.image}></MorphingSVG>
@@ -61,6 +64,7 @@ export default function Home() {
             <ChevronRight className="text-white size-5" />
           </button>
         </div>
+
       </div>
     </main>
   );
