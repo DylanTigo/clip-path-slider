@@ -6,9 +6,9 @@ body {
   font-family: var(--font-funnel-display);
 }
 
-
 @layer utilities {
   .center-layout {
     @apply absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2;
   }
+
 }

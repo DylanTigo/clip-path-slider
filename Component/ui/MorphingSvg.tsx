@@ -16,26 +16,18 @@ interface MorphingSVGProps {
   direction: "next" | "prev"; // Made the direction type more specific
 }
 
-interface Dimensions {
-  width: number;
-  height: number;
-}
-
 const MorphingSVG: React.FC<MorphingSVGProps> = ({
   currentIndex,
   slides,
   direction,
 }) => {
   const [visible, setVisible] = useState(false);
-  const [dimensions, setDimensions] = useState<Dimensions>({
-    width: 400,
-    height: 400,
-  });
+  const [dimensions, setDimensions] = useState(400);
   const svgRef = useRef<SVGSVGElement>(null);
   const initialArc = d3
       .arc()
       .innerRadius(0)
-      .outerRadius(dimensions.width / 2)
+      .outerRadius(dimensions / 2)
       .startAngle(direction === "next" ? 2 * Math.PI : 0)
       .endAngle(Math.PI * 2);
 
@@ -44,10 +36,7 @@ const MorphingSVG: React.FC<MorphingSVGProps> = ({
       const rect = svgRef.current?.getBoundingClientRect();
       if (!rect) return;
 
-      setDimensions({
-        width: rect.width,
-        height: rect.height,
-      });
+      setDimensions(rect.width);
     };
 
     updateDimensions();
@@ -64,7 +53,7 @@ const MorphingSVG: React.FC<MorphingSVGProps> = ({
         .append("path")
         .attr(
           "transform",
-          `translate(${dimensions.width / 2}, ${dimensions.height / 2})`
+          `translate(${dimensions / 2}, ${dimensions / 2})`
         )
         .attr("d", initialArc);
 
@@ -88,12 +77,13 @@ const MorphingSVG: React.FC<MorphingSVGProps> = ({
     const handleNextDirection = () => {
       const clipPathId = `circle-mask-${currentIndex}`;
       const currentClipPath = d3.select(`#${clipPathId} path`)
-
       setVisible(true);
 
       currentClipPath
         .transition()
-        .duration(1500)
+        .delay(currentIndex === 0 ? 700 : 0)
+        .ease(d3.easeQuadOut)
+        .duration(1000)
         .attrTween("d", () => {
           const interpolate = d3.interpolate(2 * Math.PI, 0);
           return (t: number) => initialArc.endAngle(interpolate(t))();
@@ -106,7 +96,8 @@ const MorphingSVG: React.FC<MorphingSVGProps> = ({
       if (!prevClipPath.empty()) {
         prevClipPath
           .transition()
-          .duration(1500)
+          .ease(d3.easeQuadOut)
+          .duration(1000)
           .attrTween("d", () => {
             const interpolate = d3.interpolate(0, 2 * Math.PI);
             return (t: number) => initialArc.startAngle(interpolate(t))();
@@ -125,7 +116,7 @@ const MorphingSVG: React.FC<MorphingSVGProps> = ({
     return () => {
       svg.selectAll("*.transition").interrupt();
     };
-  }, [direction, currentIndex, dimensions.width, dimensions.height, slides, initialArc]);
+  }, [direction, currentIndex, dimensions, slides, initialArc]);
 
   return (
     <svg
