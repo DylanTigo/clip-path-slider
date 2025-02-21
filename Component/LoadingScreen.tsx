@@ -7,22 +7,13 @@ gsap.registerPlugin(useGSAP);
 
 const LoadingScreen = () => {
   const loaderRef = useRef(null);
-  const textRef = useRef(null);
   const iconRef = useRef(null);
 
   useEffect(() => {
 
-    gsap.to(iconRef.current, {
-      rotate: 360,
-      duration: 1,
-      repeat: -1,
-    })
-
     // Fonction de chargement
     const handleLoad = () => {
-      const tl = gsap.timeline();
-
-      tl.to(loaderRef.current, {
+      gsap.to(loaderRef.current, {
         autoAlpha: 0,
         duration: 0.1,
         ease: "power2.inOut"
@@ -52,15 +43,7 @@ const LoadingScreen = () => {
           zIndex: 100,
         }}
       >
-        <div className="flex flex-col items-center">
           <Loader ref={iconRef} className="text-zinc-950 font-medium opacity-0" />
-          <p 
-            ref={textRef}
-            className="mt-4 text-zinc-950 font-medium opacity-0"
-          >
-            Chargement...
-          </p>
-        </div>
       </div>
   );
 };

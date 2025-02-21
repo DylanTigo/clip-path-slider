@@ -4,15 +4,9 @@
 import * as d3 from "d3";
 import { useEffect, useRef, useState } from "react";
 
-interface Slide {
-  image: string;
-  title: string;
-  description: string;
-}
-
-interface MorphingSVGProps {
+type MorphingSVGProps = {
   currentIndex: number;
-  slides: Slide[];
+  slides: string[];
   direction: "next" | "prev"; // Made the direction type more specific
 }
 
@@ -62,7 +56,7 @@ const MorphingSVG: React.FC<MorphingSVGProps> = ({
         .attr("id", `image-${index}`)
         .style("z-index", index + 1)
         .attr("width", "100%")
-        .attr("href", slide.image)
+        .attr("href", slide)
         .attr("clip-path", `url(#${clipPathId})`);
     });
 

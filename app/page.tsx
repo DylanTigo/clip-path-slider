@@ -40,8 +40,8 @@ export default function Home() {
     <main ref={mainRef}>
       <LoadingScreen/>
       <div className="flex justify-center h-svh p-4 relative">
-        <div className="flex justify-center pb-3 border-b-2 w-full border-zinc-950/70 absolute top-4">
-          Dylan Noel
+        <div className="flex justify-center pb-3 border-b w-full max-w-4xl border-zinc-950/70 absolute top-4">
+          Best of collection
         </div>
 
         <div className="flex flex-col justify-between w-full mt-14 max-w-4xl relative">
@@ -54,37 +54,41 @@ export default function Home() {
                 {slides[currentIndex].description}
               </p>
             </div>
+            
+            <div className=""></div>
+          </div>
 
-            <div className="flex text-2xl tracking-widest gap-2">
+          <div className="center-layout w-full h-full -z-10">
+            <MorphingSVG
+              currentIndex={currentIndex}
+              slides={slides.map(slide => slide.image)}
+              direction={direction}
+            />
+          </div>
+
+          <div className="flex justify-between items-end">
+            <div className="flex text-2xl content-center tracking-widest gap-2">
               <span>{String(currentIndex + 1).padStart(2, "0")}</span>
               <span className="opacity-50">
                 {" "}
                 - {String(slides.length).padStart(2, "0")}
               </span>
             </div>
-          </div>
 
-          <div className="center-layout w-full h-full -z-10">
-            <MorphingSVG
-              currentIndex={currentIndex}
-              slides={slides}
-              direction={direction}
-            />
-          </div>
-
-          <div className="flex justify-end items-center gap-3">
-            <button
-              className="p-2.5 border border-zinc-900 rounded-full"
-              onClick={handlePrev}
-            >
-              <ChevronLeft className="text-zinc-900 size-5" />
-            </button>
-            <button
-              className="p-2.5 border border-zinc-900 rounded-full"
-              onClick={handleNext}
-            >
-              <ChevronRight className="text-zinc-900 size-5" />
-            </button>
+            <div className="flex items-center gap-3">
+              <button
+                className="p-2.5 border border-zinc-900 rounded-full"
+                onClick={handlePrev}
+              >
+                <ChevronLeft className="text-zinc-900 size-5" />
+              </button>
+              <button
+                className="p-2.5 border border-zinc-900 rounded-full"
+                onClick={handleNext}
+              >
+                <ChevronRight className="text-zinc-900 size-5" />
+              </button>
+            </div>
           </div>
         </div>
       </div>
