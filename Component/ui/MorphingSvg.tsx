@@ -26,15 +26,10 @@ const MorphingSVG: React.FC<MorphingSVGProps> = ({
       .endAngle(Math.PI * 2);
 
   useEffect(() => {
-    const updateDimensions = () => {
-      const rect = svgRef.current?.getBoundingClientRect();
-      if (!rect) return;
+    const rect = svgRef.current?.getBoundingClientRect();
+    if (!rect) return;
 
-      setDimensions(rect.width);
-    };
-
-    updateDimensions();
-    window.addEventListener("resize", updateDimensions);
+    setDimensions(rect.width);
 
     const svg = d3.select(svgRef.current);
     slides.forEach((slide, index) => {
@@ -60,7 +55,6 @@ const MorphingSVG: React.FC<MorphingSVGProps> = ({
         .attr("clip-path", `url(#${clipPathId})`);
     });
 
-    return () => window.removeEventListener("resize", updateDimensions);
   }, []);
 
   // Handle animation
@@ -75,7 +69,7 @@ const MorphingSVG: React.FC<MorphingSVGProps> = ({
 
       currentClipPath
         .transition()
-        .delay(currentIndex === 0 ? 700 : 0)
+        .delay(currentIndex === 0 ? 300 : 0)
         .ease(d3.easeQuadOut)
         .duration(1000)
         .attrTween("d", () => {
