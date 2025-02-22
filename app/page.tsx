@@ -14,7 +14,7 @@ gsap.registerPlugin(useGSAP);
 export default function Home() {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [direction, setDirection] = useState<"next" | "prev">("next");
-  const tl = useRef<gsap.core.Timeline | undefined>();
+  const tl = useRef<gsap.core.Timeline | undefined>(undefined);
   const mainRef = useRef(null);
   const titleRef = useRef(null);
   const descriptionRef = useRef(null);

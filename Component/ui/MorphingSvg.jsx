@@ -4,20 +4,14 @@
 import * as d3 from "d3";
 import { useEffect, useRef, useState } from "react";
 
-type MorphingSVGProps = {
-  currentIndex: number;
-  slides: string[];
-  direction: "next" | "prev"; // Made the direction type more specific
-}
-
-const MorphingSVG: React.FC<MorphingSVGProps> = ({
+const MorphingSVG  = ({
   currentIndex,
   slides,
   direction,
 }) => {
   const [visible, setVisible] = useState(false);
   const [dimensions, setDimensions] = useState(400);
-  const svgRef = useRef<SVGSVGElement>(null);
+  const svgRef = useRef(null);
   const initialArc = d3
       .arc()
       .innerRadius(0)
@@ -74,7 +68,7 @@ const MorphingSVG: React.FC<MorphingSVGProps> = ({
         .duration(1000)
         .attrTween("d", () => {
           const interpolate = d3.interpolate(2 * Math.PI, 0);
-          return (t: number) => initialArc.endAngle(interpolate(t))();
+          return (t) => initialArc.endAngle(interpolate(t))();
         });
     };
 
@@ -88,7 +82,7 @@ const MorphingSVG: React.FC<MorphingSVGProps> = ({
           .duration(1000)
           .attrTween("d", () => {
             const interpolate = d3.interpolate(0, 2 * Math.PI);
-            return (t: number) => initialArc.startAngle(interpolate(t))();
+            return (t) => initialArc.startAngle(interpolate(t))();
           });
       }
     };
